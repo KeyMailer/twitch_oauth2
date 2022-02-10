@@ -34,7 +34,7 @@ module TwitchOAuth2
 
 				if validate_result[:status] == 401
 					return refreshed_tokens(refresh_token: refresh_token) if token_type == :user
-				elsif validate_result[:expires_in].positive?
+				elsif validate_result[:expires_in].positive? || validate_result[:expires_in] == 0
 					return { access_token: access_token, refresh_token: refresh_token }
 				end
 			end

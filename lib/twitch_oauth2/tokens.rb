@@ -62,6 +62,9 @@ module TwitchOAuth2
 
 			if validate_result[:status] == 401
 				refresh_tokens
+			elsif validate_result[:expires_in].nil? || validate_result[:expires_in].zero?
+				# legacy client apps don't have expiring tokens.
+				@expires_at = DateTime::Infinity.new
 			elsif (expires_in = validate_result[:expires_in]).positive?
 				@expires_at = Time.now + expires_in
 			else

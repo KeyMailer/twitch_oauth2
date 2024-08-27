@@ -10,13 +10,13 @@ module TwitchOAuth2
 		## * right now `refresh_token` is kind of constant, but it can have TTL in the future;
 		## * right now there is no `refresh_token` for `:application` tokens, but it can appears
 		##   in the future.
-		attr_reader :client, :token_type, :refresh_token
+		attr_reader :client, :token_type, :refresh_token, :expires_at
 
 		## I don't know how to make it shorter
 		# rubocop:disable Metrics/ParameterLists
 		def initialize(
 			client:, access_token: nil, refresh_token: nil, token_type: :application, scopes: nil,
-			on_update: nil
+			on_update: nil, expires_at: nil
 		)
 			# rubocop:enable Metrics/ParameterLists
 			@client = client.is_a?(Hash) ? Client.new(**client) : client
@@ -26,7 +26,7 @@ module TwitchOAuth2
 			@scopes = scopes
 			@on_update = on_update
 
-			@expires_at = nil
+			@expires_at = expires_at
 		end
 
 		def valid?
